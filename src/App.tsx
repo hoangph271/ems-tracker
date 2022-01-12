@@ -51,7 +51,10 @@ const App: StyledFC = (props) => {
   const [data, setData] = useState<APIContent>()
 
   useEffect(() => {
-    if (!code) return
+    if (!code) {
+      setData(undefined)
+      return
+    }
 
     fetch(`https://api.myems.vn/TrackAndTraceItemCode?itemcode=${code}&language=1`)
       .then(async res => {
@@ -62,14 +65,23 @@ const App: StyledFC = (props) => {
 
   return (
     <div className={className} data-testid="App">
-      <BarcodeScanner
-        onData={setCode}
-      />
+      {code ? (
+        <button onClick={() => setCode('')}>
+          {'Scan again'}
+        </button>
+      ) : (
+        <BarcodeScanner
+          onData={setCode}
+        />
+      )}
       {data && (
         <div>
           <div>
             {data.TBL_INFO.MAE1} - {data.TBL_INFO.TRANG_THAI}
           </div>
+          <pre>
+            {JSON.stringify(data, null, 2)}
+          </pre>
         </div>
       )}
     </div>
@@ -81,7 +93,7 @@ const StyledApp = styled(App)`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   background-image: url(background.jpg);
   background-size: cover;
