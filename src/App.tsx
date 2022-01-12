@@ -1,15 +1,75 @@
+/* eslint-disable camelcase */
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { NonStopWatch } from './components/NonStopWatch'
+import { BarcodeScanner } from './components/BarcodeScanner'
 import type { StyledFC } from './types'
+
+export interface ListTBLDELIVERY {
+  NGAY_TRANG_THAI: string;
+  GIO_TRANG_THAI: string;
+  NGAY_PHAT: string;
+  NGAY_NHAP: null;
+  VI_TRI: string;
+  TRANG_THAI: string;
+}
+export interface ListTBLDINHVI {
+  NGAY_TRANG_THAI: string;
+  NGAY: string;
+  GIO: string;
+  TRANG_THAI: string;
+  VI_TRI: string;
+  DIEN_THOAI: string;
+}
+export interface TblInfo {
+  Nuoc_Chapnhan: string;
+  Nuoc_Phat: string;
+  BC_GUI: string;
+  BC_PHAT: string;
+  HO_TEN_GUI: string;
+  DIA_CHI_GUI: string;
+  HO_TEN_NHAN: string;
+  DIA_CHI_NHAN: string;
+  LO: string;
+  MA_KH: string;
+  MA_THAM_CHIEU: string;
+  KHOI_LUONG: string;
+  MAE1: string;
+  TRANG_THAI: string;
+}
+export interface APIContent {
+  List_TBL_DINH_VI: ListTBLDINHVI[];
+  List_TBL_DELIVERY: ListTBLDELIVERY[];
+  List_TBL_DELIVERY_lIST: null;
+  Code: string;
+  Message: string;
+  TBL_INFO: TblInfo;
+}
 
 const App: StyledFC = (props) => {
   const { className } = props
+  const [code, setCode] = useState('')
+  const [data, setData] = useState<APIContent>()
+
+  useEffect(() => {
+    fetch(`https://api.myems.vn/TrackAndTraceItemCode?itemcode=${code}&language=1`)
+      .then(async res => {
+        const data: APIContent = await res.json()
+        setData(data)
+      })
+  }, [code])
 
   return (
     <div className={className} data-testid="App">
-      <p>{'Hang in there, @Buddy...! :")'}</p>
-      <NonStopWatch startAt={new Date('2021-08-11T20:49:00.000Z').getTime()} />
-      <h4>{'Of #NFC'}</h4>
+      <BarcodeScanner
+        onData={setCode}
+      />
+      {data && (
+        <div>
+          <div>
+            {data.TBL_INFO.MAE1} - {data.TBL_INFO.TRANG_THAI}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
