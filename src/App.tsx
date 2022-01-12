@@ -66,7 +66,7 @@ const App: StyledFC = (props) => {
   return (
     <div className={className} data-testid="App">
       {code ? (
-        <button onClick={() => setCode('')}>
+        <button onClick={() => setCode('')} style={{ padding: '2rem' }}>
           {'Scan again'}
         </button>
       ) : (
@@ -79,7 +79,7 @@ const App: StyledFC = (props) => {
           <div>
             {data.TBL_INFO.MAE1} - {data.TBL_INFO.TRANG_THAI}
           </div>
-          <pre>
+          <pre style={{ maxWidth: 'calc(100vw - 4rem)' }}>
             {JSON.stringify(data, null, 2)}
           </pre>
         </div>
