@@ -51,6 +51,8 @@ const App: StyledFC = (props) => {
   const [data, setData] = useState<APIContent>()
 
   useEffect(() => {
+    if (!code) return
+
     fetch(`https://api.myems.vn/TrackAndTraceItemCode?itemcode=${code}&language=1`)
       .then(async res => {
         const data: APIContent = await res.json()
