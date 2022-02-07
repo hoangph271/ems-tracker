@@ -147,6 +147,10 @@ const StyledApp = styled(App)`
     tr:hover {
       background-color: #ddd;
     }
+
+    td p {
+      font-weight: normal;
+    }
   }
 `
 
