@@ -96,7 +96,10 @@ const App: StyledFC = (props) => {
             <tbody>
               {data.List_TBL_DINH_VI.map((item, i) => (
                 <tr key={i}>
-                  <td>{item.GIO}@${item.NGAY}</td>
+                  <td>
+                    <p>{item.GIO}</p>
+                    <p>{item.NGAY}</p>
+                  </td>
                   <td>{item.TRANG_THAI}</td>
                   <td>{item.VI_TRI}</td>
                 </tr>
