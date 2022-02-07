@@ -47,7 +47,8 @@ export interface APIContent {
 
 const App: StyledFC = (props) => {
   const { className } = props
-  const [code, setCode] = useState('EV489175315VN')
+  const queryParams = new URLSearchParams(location.search)
+  const [code, setCode] = useState(queryParams.get('code') ?? '')
   const [data, setData] = useState<APIContent>()
 
   useEffect(() => {
@@ -56,12 +57,17 @@ const App: StyledFC = (props) => {
       return
     }
 
+    if (code !== queryParams.get('code')) {
+      window.location.href = `/?code=${code}`
+      return
+    }
+
     fetch(`https://api.myems.vn/TrackAndTraceItemCode?itemcode=${code}&language=1`)
       .then(async res => {
         const data: APIContent = await res.json()
         setData(data)
       })
-  }, [code])
+  }, [code, queryParams.get('code')])
 
   return (
     <div className={className} data-testid="App">
@@ -81,9 +87,11 @@ const App: StyledFC = (props) => {
           </div>
           <table className="tbl-dinh-vi">
             <thead>
-            <th>Ngay gio</th>
-            <th>Trang thai</th>
-            <th>Vi tri</th>
+              <tr>
+                <th>Ngay gio</th>
+                <th>Trang thai</th>
+                <th>Vi tri</th>
+              </tr>
             </thead>
             <tbody>
               {data.List_TBL_DINH_VI.map((item, i) => (
