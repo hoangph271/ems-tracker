@@ -47,7 +47,7 @@ export interface APIContent {
 
 const App: StyledFC = (props) => {
   const { className } = props
-  const [code, setCode] = useState('')
+  const [code, setCode] = useState('EV489175315VN')
   const [data, setData] = useState<APIContent>()
 
   useEffect(() => {
@@ -79,9 +79,22 @@ const App: StyledFC = (props) => {
           <div>
             {data.TBL_INFO.MAE1} - {data.TBL_INFO.TRANG_THAI}
           </div>
-          <pre style={{ maxWidth: 'calc(100vw - 4rem)' }}>
-            {JSON.stringify(data, null, 2)}
-          </pre>
+          <table className="tbl-dinh-vi">
+            <thead>
+            <th>Ngay gio</th>
+            <th>Trang thai</th>
+            <th>Vi tri</th>
+            </thead>
+            <tbody>
+              {data.List_TBL_DINH_VI.map((item, i) => (
+                <tr key={i}>
+                  <td>{item.GIO}@${item.NGAY}</td>
+                  <td>{item.TRANG_THAI}</td>
+                  <td>{item.VI_TRI}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
@@ -104,6 +117,25 @@ const StyledApp = styled(App)`
   h4, p {
     font-weight: bold;
     text-align: center;
+  }
+
+  .tbl-dinh-vi {
+    background-color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+
+    td, th {
+      border: 1px solid #ddd;
+      padding: 0.4rem;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #ddd;
+    }
   }
 `
 
